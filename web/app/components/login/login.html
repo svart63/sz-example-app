@@ -3,13 +3,17 @@
     <h4 class="text-success align-content-center">Welcome to demo social network</h4>
     <br/>
     <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" v-model="email" placeholder="Enter email">
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        <label for="pass">Password</label>
+        <input type="password" class="form-control" id="pass" v-model="password" placeholder="Password">
     </div>
-    <button type="submit" class="btn btn-primary">Login</button>
+    <div class="form-group">
+        <button type="submit" class="btn btn-outline-success" @click="login">Login</button>
+        <span class="pr-1 pl-1 bottom align-bottom align-text-bottom">or</span>
+        <button type="submit" class="btn btn-outline-primary" @click="registration">Registration</button>
+    </div>
 </form>
