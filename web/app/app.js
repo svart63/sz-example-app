@@ -1,4 +1,5 @@
 import {LoginComponent} from "./components/login/login.js";
+import {ProfileComponent} from "./components/profile/profile.js";
 
 const routes = [
     {
@@ -10,8 +11,13 @@ const routes = [
     },
     {
         path: '/id/:id',
-        alias: '/',
-        component: LoginComponent, meta: {
+        component: ProfileComponent, meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/',
+        component: ProfileComponent, meta: {
             requiresAuth: true
         }
     }
@@ -22,7 +28,7 @@ const router = new VueRouter({
 });
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (localStorage.getItem('jwt') == null) {
+        if (localStorage.getItem('auth') == null) {
             next({
                 path: '/login',
                 params: {nextUrl: to.fullPath}
