@@ -12,9 +12,12 @@ export let LoginComponent = {
         registration() {
             fetch('/registration', {
                 method: 'POST',
-                body: {
+                body: JSON.stringify({
                     email: this.email,
                     password: this.password
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
                 }
             }).then(resp => {
                 if (resp.status !== 200) {
