@@ -11,34 +11,16 @@ const routes = [
     },
     {
         path: '/id/:id',
-        component: ProfileComponent, meta: {
-            requiresAuth: true
-        }
+        component: ProfileComponent
     },
     {
         path: '/',
-        component: ProfileComponent, meta: {
-            requiresAuth: true
-        }
+        component: ProfileComponent
     }
 ];
 
 const router = new VueRouter({
-    routes // сокращённая запись для `routes: routes`
-});
-router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (localStorage.getItem('auth') == null) {
-            next({
-                path: '/login',
-                params: {nextUrl: to.fullPath}
-            })
-        } else {
-            next()
-        }
-    } else {
-        next()
-    }
+    routes
 });
 
 const app = new Vue({

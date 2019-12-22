@@ -23,7 +23,7 @@ class RegistrationServiceTest {
         String email = "user.email@domain.com";
         UserLogin login = newUser(email);
         regService.registration(login);
-        UserLogin user = regService.findByEmail(email);
+        UserLogin user = regService.findByEmail(email).get();
         assertNotNull(user);
         assertEquals(email, user.getEmail());
         assertThat(user.getId(), greaterThan(0L));

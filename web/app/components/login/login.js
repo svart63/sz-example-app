@@ -29,20 +29,35 @@ export let LoginComponent = {
                 }
             })
         },
-        login() {
-            fetch('/login', {
-                method: 'POST',
-                body: JSON.stringify({
-                    email: this.email,
-                    password: this.password
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
+        buildUri(params) {
+            let uri = '';
+            Object.keys(params).forEach(k => {
+                if (uri) {
+                    uri += '&'
                 }
+                uri += encodeURI(k + '=' + params[k]);
+            });
+            return uri;
+        },
+        login() {
+            let params = {
+                email: this.email,
+                password: this.password
+            };
+
+
+            let url = '/login?' + this.buildUri(params);
+            fetch(url, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(params)
             }).then(resp => {
                 if (resp.status === 200) {
-                    resp.text().then(token=> {
-                        localStorage.setItem('auth', token);
+                    resp.text().then(id => {
+                        this.$router.push({path: '/id/' + id});
                     });
                 }
             })

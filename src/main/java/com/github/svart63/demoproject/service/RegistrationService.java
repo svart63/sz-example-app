@@ -4,12 +4,14 @@ import com.github.svart63.demoproject.model.UserLogin;
 import com.github.svart63.demoproject.repo.auth.RegistrationRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
 
 @Service
 public class RegistrationService extends AuthService<RegistrationRepository> {
+    private final BCryptPasswordEncoder encoder;
     private Pattern emailPattern = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+" +
             "(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"" +
             "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])" +
@@ -19,8 +21,9 @@ public class RegistrationService extends AuthService<RegistrationRepository> {
             "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])");
 
     @Autowired
-    public RegistrationService(RegistrationRepository repo) {
+    public RegistrationService(RegistrationRepository repo, BCryptPasswordEncoder encoder) {
         super(repo);
+        this.encoder = encoder;
     }
 
     public void registration(UserLogin login) {
@@ -36,8 +39,8 @@ public class RegistrationService extends AuthService<RegistrationRepository> {
         if (repo.existsByEmail(login.getEmail())) {
             throw new IllegalArgumentException("User already exists");
         }
-        String md5pass = passToMd5(login);
-        login.setPassword(md5pass);
+
+        login.setPassword(encoder.encode(login.getPassword()));
         repo.save(login);
     }
 

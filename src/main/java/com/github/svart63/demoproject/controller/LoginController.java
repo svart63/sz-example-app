@@ -5,10 +5,9 @@ import com.github.svart63.demoproject.model.UserLogin;
 import com.github.svart63.demoproject.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/login")
@@ -21,11 +20,9 @@ public class LoginController {
     }
 
     @PostMapping
-    public ResponseEntity<String> registration(@RequestBody UserLogin login) {
-        try {
-            return ResponseEntity.ok(loginService.authToken(login));
-        } catch (AuthException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Long> login(@RequestParam String email) {
+        Optional<UserLogin> login = loginService.findByEmail(email);
+        return login.map(userLogin -> ResponseEntity.ok(userLogin.getId()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
