@@ -1,4 +1,5 @@
-import {viewLoader} from "../../../js/ViewLoader.js";
+import {viewLoader} from "../../../js/view-loader.js";
+import {rq} from "../../../js/rq.js";
 
 export let LoginComponent = {
     data() {
@@ -10,57 +11,19 @@ export let LoginComponent = {
     template: viewLoader.load('login'),
     methods: {
         registration() {
-            fetch('/registration', {
-                method: 'POST',
-                body: JSON.stringify({
-                    email: this.email,
-                    password: this.password
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(resp => {
-                if (resp.status !== 201) {
-                    resp.text().then(error => {
-                        alert('Error: ' + error);
-                    })
-                } else {
-                    alert("Success");
-                }
-            })
-        },
-        buildUri(params) {
-            let uri = '';
-            Object.keys(params).forEach(k => {
-                if (uri) {
-                    uri += '&'
-                }
-                uri += encodeURI(k + '=' + params[k]);
-            });
-            return uri;
+            this.$router.push({path: '/registration'});
         },
         login() {
-            let params = {
+            let pathParams = {
                 email: this.email,
                 password: this.password
             };
 
-
-            let url = '/login?' + this.buildUri(params);
-            fetch(url, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(params)
-            }).then(resp => {
+            rq.post('/login', (resp) => {
                 if (resp.status === 200) {
-                    resp.text().then(id => {
-                        this.$router.push({path: '/id/' + id});
-                    });
+                    this.$router.push({path: '/id/'});
                 }
-            })
+            }, pathParams);
         }
     }
 };

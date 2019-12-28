@@ -1,6 +1,6 @@
 package com.github.svart63.demoproject.service;
 
-import com.github.svart63.demoproject.model.UserLogin;
+import com.github.svart63.demoproject.model.User;
 import com.github.svart63.demoproject.repo.auth.RegistrationRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class RegistrationService extends AuthService<RegistrationRepository> {
         this.encoder = encoder;
     }
 
-    public void registration(UserLogin login) {
+    public void registration(User login) {
         if (login == null) {
             throw new IllegalArgumentException("User data is not provided");
         }

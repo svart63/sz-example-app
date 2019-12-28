@@ -9,9 +9,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 @Configuration
 @EnableWebSecurity
@@ -20,28 +20,23 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).and()
-                .csrf().disable()
-                .formLogin()
+        WebAuthenticationDetailsSource webAuthenticationDetailsSource = new WebAuthenticationDetailsSource();
+        http.csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/login.html","/*", "/index.html", "/app/**", "/css/**", "/js/**").permitAll()
+                .and().authorizeRequests().antMatchers("/api/registration**").permitAll()
+                .and().authorizeRequests().anyRequest().authenticated()
+                .and().formLogin().permitAll()
+                .loginProcessingUrl("/login")
+                .loginPage("/#/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .loginProcessingUrl("/#/login")
-                .defaultSuccessUrl("/profile")
-                .failureUrl("/error")
-                .loginPage("/#/login")
-                .failureHandler((request, response, exception) -> {
-                    response.getWriter().println("Invalid credentials");
-                    response.setStatus(400);
-                    log.error("Login failed", exception);
-                })
-                .permitAll()
-                .and().authorizeRequests()
-                .mvcMatchers("/login**", "/registration**", "/", "/css/**", "/js/**", "/index.html", "/app/**")
-                .permitAll()
-                .mvcMatchers("/profile**")
-                .authenticated();
-
+                .and()
+                .logout()
+                .invalidateHttpSession(true)
+                .logoutUrl("/logout")
+                .clearAuthentication(true)
+                .permitAll();
     }
 
     @Autowired
@@ -53,7 +48,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SimpleGrantedAuthority authority() {
-        return new SimpleGrantedAuthority("user");
+        return new SimpleGrantedAuthority("USER");
     }
 
     @Bean

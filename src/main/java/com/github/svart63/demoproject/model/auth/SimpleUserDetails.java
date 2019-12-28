@@ -1,6 +1,6 @@
 package com.github.svart63.demoproject.model.auth;
 
-import com.github.svart63.demoproject.model.UserLogin;
+import com.github.svart63.demoproject.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,14 +9,14 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class SimpleUserDetails implements UserDetails {
-    private UserLogin userLogin;
+    private User user;
 
     public long getId() {
-        return userLogin.getId();
+        return user.getId();
     }
 
-    public SimpleUserDetails(UserLogin userLogin) {
-        this.userLogin = userLogin;
+    public SimpleUserDetails(User user) {
+        this.user = user;
     }
 
     @Override
@@ -26,12 +26,12 @@ public class SimpleUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return userLogin.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return userLogin.getEmail();
+        return user.getEmail();
     }
 
     @Override

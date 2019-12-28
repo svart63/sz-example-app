@@ -1,7 +1,6 @@
 package com.github.svart63.demoproject.controller;
 
-import com.github.svart63.demoproject.exception.AuthException;
-import com.github.svart63.demoproject.model.UserLogin;
+import com.github.svart63.demoproject.model.User;
 import com.github.svart63.demoproject.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity<Long> login(@RequestParam String email) {
-        Optional<UserLogin> login = loginService.findByEmail(email);
+        Optional<User> login = loginService.findByEmail(email);
         return login.map(userLogin -> ResponseEntity.ok(userLogin.getId()))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

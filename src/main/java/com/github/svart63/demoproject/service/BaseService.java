@@ -24,6 +24,10 @@ public abstract class BaseService<E extends BaseObject, R extends BaseRepo<E>> {
         return repo.save(object);
     }
 
+    public Iterable<E> findAll() {
+        return repo.findAll();
+    }
+
     public void delete(long id) {
         repo.deleteById(id);
     }

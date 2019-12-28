@@ -13,13 +13,12 @@ import java.util.List;
 public class Profile extends BaseObject {
     private String firstName;
     private String lastName;
-    private int age;
-    private String status;
+    private long birthDay;
     @Formula("select p.firstName, p.lastName, p.id from profile p where p.id=id")
     @OneToMany
     private List<Profile> friends;
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private UserLogin userLogin;
+    private User user;
 
 }

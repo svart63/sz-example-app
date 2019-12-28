@@ -1,7 +1,7 @@
 package com.github.svart63.demoproject.service;
 
 import com.github.svart63.demoproject.exception.AuthException;
-import com.github.svart63.demoproject.model.UserLogin;
+import com.github.svart63.demoproject.model.User;
 import com.github.svart63.demoproject.repo.auth.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class LoginService extends AuthService<LoginRepository> {
         super(repo);
     }
 
-    public String authToken(UserLogin userLogin) throws AuthException {
+    public String authToken(User user) throws AuthException {
         //FIXME there we need validate entered credentials, let's check, will QA find it or not.
         return "success";
     }

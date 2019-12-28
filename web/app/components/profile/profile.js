@@ -1,4 +1,5 @@
-import {viewLoader} from "../../../js/ViewLoader.js";
+import {viewLoader} from "../../../js/view-loader.js";
+import {rq} from "../../../js/rq.js";
 
 export let ProfileComponent = {
     data() {
@@ -9,17 +10,23 @@ export let ProfileComponent = {
     template: viewLoader.load('profile'),
     created() {
         let id = this.$route.params['id'];
-        this.load(id)
+        if (id) {
+            this.load(id);
+        } else {
+            this.load('');
+        }
     },
     methods: {
         load(id) {
-            fetch('/profile/' + id, {
-                credentials: 'include'
-            }).then(resp => {
+            let url = '/api/profile/';
+            if (id) {
+                url += id;
+            }
+            rq.get(url, (resp) => {
                 resp.json().then(json => {
                     this.profile = json;
                 })
-            });
+            })
         }
     }
 };
