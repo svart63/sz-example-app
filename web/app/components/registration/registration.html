@@ -40,6 +40,6 @@
         <button type="button" class="btn btn-sm btn-outline-info" @click="login">Sign in</button>
     </div>
     <popup :show="showWarning" :close="closeWarning">
-        <div slot="body"><h1>Body</h1></div>
+        <div slot="body">{{errorMessage}}</div>
     </popup>
 </form>

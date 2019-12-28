@@ -1,11 +1,14 @@
 import {viewLoader} from "../../../js/view-loader.js";
 import {rq} from "../../../js/rq.js";
+import {PopupComponent} from "../popup/popup.js";
 
 export let LoginComponent = {
     data() {
         return {
             email: '',
-            password: ''
+            password: '',
+            showWarning: false,
+            errorMessage: ''
         }
     },
     template: viewLoader.load('login'),
@@ -20,10 +23,19 @@ export let LoginComponent = {
             };
 
             rq.post('/login', (resp) => {
-                if (resp.status === 200) {
-                    this.$router.push({path: '/id/'});
+                if (resp.status === 401) {
+                    this.showWarning = true;
+                    this.errorMessage = 'Invalid email or password'
+                    return;
                 }
+                this.$router.push({path: '/'});
             }, pathParams);
+        },
+        closeWarning() {
+            this.showWarning = false;
         }
+    },
+    components: {
+        'popup': PopupComponent
     }
 };

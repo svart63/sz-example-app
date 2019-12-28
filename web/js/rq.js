@@ -4,6 +4,7 @@ export class Rq {
         let p = Object.assign({}, params);
         p['method'] = 'POST';
         p['credentials'] = 'include';
+        p['redirect'] = 'manual';
         let body = p['body'];
         if (body) {
             p['body'] = JSON.stringify(body);
@@ -16,7 +17,7 @@ export class Rq {
         if (!headers['content-type']) {
             headers['content-type'] = 'application/json';
         }
-        fetch(url, p).then(resp => callback(resp))
+        return fetch(url, p).then(resp => callback(resp))
     }
 
 
@@ -30,6 +31,9 @@ export class Rq {
 
     buildUri(params) {
         let uri = '';
+        if (!params) {
+            return uri;
+        }
         Object.keys(params).forEach(k => {
             if (uri) {
                 uri += '&';

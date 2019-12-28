@@ -11,7 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -20,15 +22,16 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        WebAuthenticationDetailsSource webAuthenticationDetailsSource = new WebAuthenticationDetailsSource();
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login.html","/*", "/index.html", "/app/**", "/css/**", "/js/**").permitAll()
+                .antMatchers("/login.html", "/*", "/index.html", "/app/**", "/css/**", "/js/**").permitAll()
                 .and().authorizeRequests().antMatchers("/api/registration**").permitAll()
                 .and().authorizeRequests().anyRequest().authenticated()
                 .and().formLogin().permitAll()
                 .loginProcessingUrl("/login")
                 .loginPage("/#/login")
+                .defaultSuccessUrl("/#/id")
+                .failureHandler(authFailHandler())
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
@@ -37,6 +40,13 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .clearAuthentication(true)
                 .permitAll();
+    }
+
+    private AuthenticationFailureHandler authFailHandler() {
+        return (request, response, exception) -> {
+            response.getWriter().println("Invalid email or password");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        };
     }
 
     @Autowired

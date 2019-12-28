@@ -19,4 +19,7 @@
         <span class="pl-1 pr-1 align-bottom"><u>or</u></span>
         <button type="button" class="btn btn-sm btn-outline-info" @click="registration">Sign up</button>
     </div>
+    <popup :show="showWarning" :close="closeWarning">
+        <div slot="body">{{errorMessage}}</div>
+    </popup>
 </form>
