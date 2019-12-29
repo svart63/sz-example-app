@@ -31,6 +31,6 @@ public class ProfileController {
 
     @GetMapping
     public ResponseEntity<Profile> getProfile(@AuthenticationPrincipal SimpleUserDetails user) {
-        return ResponseEntity.of(profileService.findOne(user.getId()));
+        return ResponseEntity.of(profileService.findByUserId(user.getId()));
     }
 }

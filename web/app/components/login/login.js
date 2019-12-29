@@ -8,7 +8,8 @@ export let LoginComponent = {
             email: '',
             password: '',
             showWarning: false,
-            errorMessage: ''
+            errorMessage: '',
+            isLoginPage: true
         }
     },
     template: viewLoader.load('login'),

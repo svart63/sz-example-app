@@ -1,7 +1,10 @@
 package com.github.svart63.demoproject.controller;
 
+import com.github.svart63.demoproject.dto.Registration;
+import com.github.svart63.demoproject.model.Profile;
 import com.github.svart63.demoproject.model.Role;
 import com.github.svart63.demoproject.model.User;
+import com.github.svart63.demoproject.service.ProfileService;
 import com.github.svart63.demoproject.service.RegistrationService;
 import com.github.svart63.demoproject.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,23 +22,43 @@ import java.net.URI;
 public class RegistrationController {
     private final RegistrationService registrationService;
     private final RoleService roleService;
+    private final ProfileService profileService;
 
-    public RegistrationController(RegistrationService registrationService, RoleService roleService) {
+    public RegistrationController(RegistrationService registrationService, RoleService roleService, ProfileService profileService) {
         this.registrationService = registrationService;
         this.roleService = roleService;
+        this.profileService = profileService;
     }
 
     @PostMapping
-    public ResponseEntity<String> registration(@RequestBody User login) {
+    public ResponseEntity<String> registration(@RequestBody Registration registration) {
         try {
-            login.setRole(roleService.findByName("USER")
-                    .orElseGet(() -> roleService.save(new Role("USER"))));
-            this.registrationService.registration(login);
+            User user = saveUser(registration);
+            saveProfile(registration, user);
             return ResponseEntity.created(URI.create("/login.html")).build();
         } catch (Exception e) {
             log.error("Registration failed", e);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
+    }
+
+    private User saveUser(@RequestBody Registration registration) {
+        User user = new User();
+        user.setPassword(registration.getPassword());
+        user.setEmail(registration.getEmail());
+        user.setRole(roleService.findByName("USER")
+                .orElseGet(() -> roleService.save(new Role("USER"))));
+        this.registrationService.registration(user);
+        return user;
+    }
+
+    private void saveProfile(@RequestBody Registration registration, User user) {
+        Profile profile = new Profile();
+        profile.setBirthDay(registration.getBirthDay());
+        profile.setFirstName(registration.getFirstName());
+        profile.setLastName(registration.getLastName());
+        profile.setUser(user);
+        this.profileService.save(profile);
     }
 }

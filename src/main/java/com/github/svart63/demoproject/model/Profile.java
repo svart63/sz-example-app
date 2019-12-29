@@ -18,7 +18,6 @@ public class Profile extends BaseObject {
     @OneToMany
     private List<Profile> friends;
     @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
     private User user;
 
 }

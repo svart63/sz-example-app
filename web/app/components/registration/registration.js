@@ -14,7 +14,8 @@ export let RegistrationComponent = {
             },
             birthDay: '',
             showWarning: false,
-            errorMessage: ''
+            errorMessage: '',
+            isLoginPage: true
         }
     },
     template: viewLoader.load('registration'),
@@ -27,7 +28,10 @@ export let RegistrationComponent = {
                         this.errorMessage = "Ooops, registration failed due to: " + error;
                     })
                 } else {
-                    alert("Success");
+                    resp.text().then(error => {
+                        this.showWarning = true;
+                        this.errorMessage = "Success, sign in, please.";
+                    })
                 }
             }, {}, {body: this.profile})
         },

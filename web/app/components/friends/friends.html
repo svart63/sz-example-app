@@ -1,0 +1,25 @@
+<form action="/login" method="post" class="col-md-4 container h-100">
+    <br/>
+    <h4 class="text-success nav justify-content-center">Welcome to demo social network</h4>
+    <br/>
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control bg-dark text-success" id="email" name="email"
+               aria-describedby="emailHelp" v-model="email"
+               placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+        <label for="pass">Password</label>
+        <input type="password" class="form-control bg-dark text-success" id="pass" name="password"
+               v-model="password" placeholder="Password">
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-sm btn-outline-success" @click="login">Sign in</button>
+        <span class="pl-1 pr-1 align-bottom"><u>or</u></span>
+        <button type="button" class="btn btn-sm btn-outline-info" @click="registration">Sign up</button>
+    </div>
+    <popup :show="showWarning" :close="closeWarning">
+        <div slot="body">{{errorMessage}}</div>
+    </popup>
+</form>

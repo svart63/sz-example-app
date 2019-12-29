@@ -17,7 +17,24 @@
 </head>
 <body>
 <div id="app">
-    <router-view></router-view>
+    <div class="container col-md-6">
+        <ul v-if="isNotLoginPage" v-cloak
+            class="nav navbar navbar-expand-sm navbar-dark bg-dark rounded-bottom justify-content-center">
+            <li class="nav-item">
+                <router-link class="nav-link text-success" to="/id/">My profile</router-link>
+            </li>
+            <li class="nav-item">
+                <router-link class="nav-link text-success" to="/id/messages">Messages</router-link>
+            </li>
+            <li class="nav-item">
+                <router-link class="nav-link text-success" to="/id/friends">Friends</router-link>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-success" href="/logout">Logout</a>
+            </li>
+        </ul>
+        <router-view></router-view>
+    </div>
 </div>
 </body>
 </html>

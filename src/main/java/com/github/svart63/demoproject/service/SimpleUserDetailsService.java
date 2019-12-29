@@ -1,7 +1,7 @@
 package com.github.svart63.demoproject.service;
 
 import com.github.svart63.demoproject.model.auth.SimpleUserDetails;
-import com.github.svart63.demoproject.repo.auth.LoginRepository;
+import com.github.svart63.demoproject.repo.auth.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SimpleUserDetailsService implements UserDetailsService {
-    private LoginRepository loginRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public SimpleUserDetailsService(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
+    public SimpleUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return loginRepository.findByEmail(email)
+        return userRepository.findByEmail(email)
                 .map(SimpleUserDetails::new)
                 .orElseThrow(() -> new IllegalArgumentException("User not found by email: " + email));
     }
