@@ -15,27 +15,18 @@ const routes = [
     {
         path: '/',
         component: ProfileComponent,
-        alias: '/id',
-        children: [
-            {path: 'friends', component: FriendsComponent}
-        ]
+        alias: ['/id', "/id/{id}"],
+    },
+    {
+        path: '/friends',
+        component: FriendsComponent
     }
 ];
 
 const router = new VueRouter({
     routes
 });
-let isLoginPage = false;
-router.beforeEach((to, from, next) => {
-    let path = router.currentRoute.path;
-    isLoginPage = path.indexOf('login') || path.indexOf('registration');
-    next();
-});
+
 const app = new Vue({
-    data() {
-        return {
-            isNotLoginPage: !isLoginPage
-        }
-    },
     router
 }).$mount('#app');

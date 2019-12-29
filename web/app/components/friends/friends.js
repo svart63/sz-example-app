@@ -14,7 +14,14 @@ export let FriendsComponent = {
     },
     methods: {
         loadFriends() {
-
+            rq.get('/friends', resp => {
+                resp.json().then(json => {
+                    this.friends.slice(0, this.friends.length);
+                    json.forEach(friend => {
+                        this.friends.push(friend);
+                    })
+                })
+            })
         }
     },
     components: {

@@ -34,8 +34,8 @@ public class RegistrationController {
     public ResponseEntity<String> registration(@RequestBody Registration registration) {
         try {
             User user = saveUser(registration);
-            saveProfile(registration, user);
-            return ResponseEntity.created(URI.create("/login.html")).build();
+            Profile profile = saveProfile(registration, user);
+            return ResponseEntity.created(URI.create("/api/profile/" + profile.getId())).build();
         } catch (Exception e) {
             log.error("Registration failed", e);
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -53,12 +53,12 @@ public class RegistrationController {
         return user;
     }
 
-    private void saveProfile(@RequestBody Registration registration, User user) {
+    private Profile saveProfile(@RequestBody Registration registration, User user) {
         Profile profile = new Profile();
         profile.setBirthDay(registration.getBirthDay());
         profile.setFirstName(registration.getFirstName());
         profile.setLastName(registration.getLastName());
         profile.setUser(user);
-        this.profileService.save(profile);
+        return this.profileService.save(profile);
     }
 }

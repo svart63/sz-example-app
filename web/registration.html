@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo project</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/them_bootstrap.min.css"/>
+    <script src="js/jquery-3.2.1.slim.min.js"></script>
+    <script type="text/javascript">
+        console.info("init1");
+
+        function userSignUp() {
+            console.info('signup');
+            let formData = {};
+            try {
+                let data = $("#signUpForm").serializeArray();
+                for (let o of data) {
+                    formData[o.name] = o.value;
+                }
+            } catch (e) {
+                console.error(e)
+            }
+            formData.birthDay = Date.parse(formData.birthDay);
+            let params = {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                }
+            };
+
+            let regParams = Object.assign({}, params);
+            regParams.body = JSON.stringify(formData);
+            fetch('/api/registration', regParams).then(resp => {
+                if (resp.status === 201) {
+                    fetch('/login?email=' + formData.email + '&password=' + formData.password, params).then(() => {
+                        window.location = '/';
+                    });
+                } else {
+                    resp.text().then(txt => alert(txt));
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<form id="signUpForm" class="col-md-4 container h-100">
+    <br/>
+    <h4 class="text-success nav justify-content-center">Let's be familiar</h4>
+    <br/>
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control bg-dark text-success" id="email" name="email"
+               aria-describedby="emailHelp"
+               v-model="profile.email"
+               placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+        <label for="pass">Password</label>
+        <input type="password" class="form-control bg-dark text-success" id="pass" name="password"
+               v-model="profile.password"
+               placeholder="Password">
+    </div>
+    <div class="form-group">
+        <label>First name</label>
+        <input class="form-control bg-dark text-success" name="firstName"
+               v-model="profile.firstName"
+               placeholder="First name">
+    </div>
+    <div class="form-group">
+        <label>Last name</label>
+        <input class="form-control bg-dark text-success" name="lastName"
+               v-model="profile.lastName"
+               placeholder="Last name">
+    </div>
+    <div class="form-group">
+        <label for="birthDay">Birth day</label>
+        <input required="required" type="date" class="form-control bg-dark text-success" id="birthDay" name="birthDay"
+               v-model="birthDay"
+               placeholder="Birth day">
+    </div>
+    <div class="form-group align-bottom">
+        <button type="button" id="signUp" class="btn btn-sm btn-outline-success" onclick="userSignUp()">Sign up</button>
+        <span class="pl-1 pr-1 align-bottom"><u>or</u></span>
+        <a class="btn btn-sm btn-outline-info" href="login.html">Sign in</a>
+    </div>
+</form>
+</body>
+</html>
