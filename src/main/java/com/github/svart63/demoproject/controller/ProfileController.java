@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -47,7 +45,7 @@ public class ProfileController {
         }
     }
 
-    @PostMapping("/add/{profileId}")
+    @PostMapping("/friends/add/{profileId}")
     public ResponseEntity<?> addFriend(@PathVariable long profileId, @AuthenticationPrincipal SimpleUserDetails user) {
         profileService.addFriend(user.getProfileId(), profileId);
         return ResponseEntity.ok().build();
