@@ -6,7 +6,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.*;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +33,7 @@ public class SearchService {
                     return builder.like(builder.lower(expression), '%' + StringUtils.lowerCase(e.getValue()) + '%');
                 })
                 .toArray(Predicate[]::new);
-        return repository.find(query.select(root.get("firstName").get("lastName").get("id"))
-                .where(predicates));
+        return repository.find(query.where(predicates).multiselect(root.get("firstName"), root.get("lastName"), root.get("id")));
     }
 
 }

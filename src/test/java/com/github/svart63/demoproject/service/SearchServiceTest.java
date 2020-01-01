@@ -5,6 +5,7 @@ import com.github.svart63.demoproject.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 
 import javax.transaction.Transactional;
 import java.util.Collections;
@@ -13,14 +14,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@ComponentScan("com.github.svart63")
 class SearchServiceTest {
     @Autowired
     private SearchService searchService;
     @Autowired
     private ProfileService profileService;
-
-    @Autowired
-    private UserService userService;
 
     @Test
     @Transactional
@@ -32,8 +31,9 @@ class SearchServiceTest {
         profile.setUser(user);
         profile.setFirstName("FirstName");
         profile.setLastName("LastName");
-        profileService.save(profile);
+        Profile saved = profileService.save(profile);
+        saved.setUser(null);
         List<Profile> result = searchService.find(Collections.singletonMap("firstName", "first"));
-        assertThat(result).containsOnly(profile);
+        assertThat(result).containsOnly(saved);
     }
 }
