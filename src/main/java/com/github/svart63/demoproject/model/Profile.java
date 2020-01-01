@@ -14,7 +14,6 @@ public class Profile extends BaseObject {
     private String firstName;
     private String lastName;
     private long birthDay;
-    @Formula("select p.firstName, p.lastName, p.id from profile p where p.id=id")
     @OneToMany
     private List<Profile> friends;
     @OneToOne(cascade = CascadeType.ALL)

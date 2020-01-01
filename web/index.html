@@ -18,21 +18,25 @@
 <body>
 <div id="app">
     <div class="container col-md-6">
-        <ul v-cloak
-            class="nav navbar navbar-expand-sm navbar-dark bg-dark rounded-bottom justify-content-center">
-            <li class="nav-item">
-                <router-link class="nav-link text-success" to="/id/">My profile</router-link>
-            </li>
-            <li class="nav-item">
-                <router-link class="nav-link text-success" to="/id/messages">Messages</router-link>
-            </li>
-            <li class="nav-item">
-                <router-link class="nav-link text-success" to="/id/friends">Friends</router-link>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-success" href="/logout">Logout</a>
-            </li>
-        </ul>
+        <div>
+            <ul v-cloak
+                class="nav navbar navbar-expand-sm navbar-dark bg-dark rounded-bottom justify-content-center">
+                <li class="nav-item">
+                    <router-link class="nav-link text-success" to="/">My profile</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link text-success" to="/messages">Messages</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link text-success" to="/friends">Friends</router-link>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-success" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container col-md-6">
         <router-view></router-view>
     </div>
 </div>

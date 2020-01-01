@@ -27,6 +27,17 @@ export let ProfileComponent = {
                     this.profile = json;
                 })
             })
+        },
+        age(bd) {
+            let bdDate = new Date(bd);
+            let now = new Date();
+            let age = now.getYear() - bdDate.getYear();
+            if (now.getMonth()>= bdDate.getMonth()) {
+                if (now.getDay() >= bdDate.getDay()) {
+                    return age++;
+                }
+            }
+            return age;
         }
     }
 };

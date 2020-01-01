@@ -1,6 +1,7 @@
 package com.github.svart63.demoproject.repo;
 
 import com.github.svart63.demoproject.model.Profile;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,7 @@ public interface ProfileRepository extends BaseRepo<Profile> {
 
     Optional<Profile> findIdByUserId(long id);
 
-    @Query(nativeQuery = true, value = "insert into profile_friends values(:source, :target)")
+    @Modifying
+    @Query(nativeQuery = true, value = "insert into profile_friends values(?, ?)")
     void insertFriend(long source, long target);
 }

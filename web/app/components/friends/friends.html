@@ -1,5 +1,9 @@
-<div class="container col-md-6">
-    <div class="col-md-12 row" v-for="let friend in friends">
-        <router-link :to="'/id/' + friend.id">{{friend.firstName friend.lastName}}</router-link>
+<div class="container mt-1 col-md-6">
+    <form class="form-inline">
+        <input class="form-control form-control-sm mr-sm-2 bg-dark text-success" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <div class="col-md-12 row" v-for="friend of friends">
+        <router-link :to="'/id/' + friend.id">{{friend.firstName + ' ' + friend.lastName}}</router-link>
     </div>
 </div>

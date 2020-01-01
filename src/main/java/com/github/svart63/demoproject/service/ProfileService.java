@@ -5,10 +5,12 @@ import com.github.svart63.demoproject.repo.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ProfileService extends BaseService<Profile, ProfileRepository> {
     @Autowired
     public ProfileService(ProfileRepository repo) {

@@ -26,7 +26,7 @@ public class RegistrationService extends AuthService<RegistrationRepository> {
         this.encoder = encoder;
     }
 
-    public void registration(User login) {
+    public User registration(User login) {
         if (login == null) {
             throw new IllegalArgumentException("User data is not provided");
         }
@@ -41,7 +41,7 @@ public class RegistrationService extends AuthService<RegistrationRepository> {
         }
 
         login.setPassword(encoder.encode(login.getPassword()));
-        repo.save(login);
+        return repo.save(login);
     }
 
 }

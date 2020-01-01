@@ -9,12 +9,12 @@ export let FriendsComponent = {
         }
     },
     template: viewLoader.load('friends'),
-    mounted() {
+    created() {
         this.loadFriends();
     },
     methods: {
         loadFriends() {
-            rq.get('/friends', resp => {
+            rq.get('/api/profile/friends', resp => {
                 resp.json().then(json => {
                     this.friends.slice(0, this.friends.length);
                     json.forEach(friend => {
