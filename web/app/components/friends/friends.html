@@ -1,9 +1,15 @@
-<div class="container mt-1 col-md-6">
-    <form class="form-inline">
-        <input class="form-control form-control-sm mr-sm-2 bg-dark text-success" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-    <div class="col-md-12 row" v-for="friend of friends">
-        <router-link :to="'/id/' + friend.id">{{friend.firstName + ' ' + friend.lastName}}</router-link>
+<div class="mt-1">
+    <div>
+        <div class="form-group">
+            <label for="searchInFriends">Email address</label>
+            <input id='searchInFriends' class="form-control form-control-sm bg-dark text-success" type="search"
+                   v-model="searchString" @change="modifySearchString"
+                   placeholder="Search" aria-label="Search">
+        </div>
+    </div>
+    <div v-for="friend in filteredFriends()">
+        <div class="border border-dark mt-1 p-1 w-100 table">
+            <router-link :to="'/id/' + friend.id">{{friend.firstName + ' ' + friend.lastName}}</router-link>
+        </div>
     </div>
 </div>
