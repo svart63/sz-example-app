@@ -28,7 +28,8 @@
                     <router-link class="nav-link text-success" to="/messages">Messages</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link text-success" to="/friends">Friends</router-link>
+                    <router-link class="nav-link text-success" to="/friends">Friends
+                    </router-link>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-success" href="/logout">Logout</a>
@@ -37,7 +38,9 @@
         </div>
     </div>
     <div class="container col-md-6">
-        <router-view></router-view>
+        <transition>
+            <router-view></router-view>
+        </transition>
     </div>
 </div>
 </body>

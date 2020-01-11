@@ -17,7 +17,7 @@ export class Rq {
         if (!headers['content-type']) {
             headers['content-type'] = 'application/json';
         }
-        return fetch(url, p).then(resp => callback(resp))
+        fetch(url, p).then(resp => callback(resp))
     }
 
 

@@ -6,11 +6,14 @@
                    v-model="searchString" @change="modifySearchString"
                    placeholder="Search" aria-label="Search">
         </div>
-        <router-link class="text-sm-left small text-info d-inline w-25" :to="'/search?' + fnameFilter + '&' + lnameFilter">Search Global</router-link>
     </div>
-    <div v-for="friend in filteredFriends">
-        <div class="border border-dark mt-1 p-1 w-100 table">
+    <div v-for="friend in friends">
+        <div class="border border-dark mt-1 p-2 w-100">
             <router-link :to="'/id/' + friend.id">{{friend.firstName + ' ' + friend.lastName}}</router-link>
+            <button class="text-success border-0 btn-outline-dark btn-link float-right" @click="add(friend.id)">add</button>
         </div>
+    </div>
+    <div v-if="nothingFound" class="text-warning border border-dark mt-1 p-1 w-100">
+        <span>Nothing found...</span>
     </div>
 </div>

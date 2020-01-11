@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,15 +20,9 @@ public class ProfileService extends BaseService<Profile, ProfileRepository> {
         return repo.findByUserId(userId);
     }
 
-    public List<Profile> findFriendsByProfileId(long profileId) {
-        return repo.findFriendsById(profileId);
-    }
 
     public Optional<Profile> findProfileIdByUserId(long id) {
         return repo.findIdByUserId(id);
     }
 
-    public void addFriend(long source, long target) {
-        repo.insertFriend(source, target);
-    }
 }

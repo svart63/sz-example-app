@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import javax.transaction.Transactional;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -17,25 +19,23 @@ class ProfileControllerTest extends AbstractControllerTest {
 
     @Test
     @WithMockUser(value = EMAIL, password = "123456")
+    @Transactional
     void testAddFriend() throws Exception {
-        User user = new User();
-        user.setEmail(EMAIL);
-        user.setPassword("123456");
-        registrationService.registration(user);
-
-        Profile first = createProfile();
-        Profile second = createProfile();
-        mockMvc.perform(post("/api/profile/friends/add/").servletPath(String.valueOf(second.getId()))
+        createProfile(EMAIL);
+        Profile second = createProfile("test@mail.com");
+        mockMvc.perform(post("/api/friendship/friends/add/" + second.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
-    private Profile createProfile() {
+    private Profile createProfile(String s) {
         Profile profile = new Profile();
         profile.setBirthDay(0L);
         profile.setFirstName("S");
         profile.setFirstName("Z");
-        User user = registrationService.findByEmail(EMAIL).orElseThrow(() -> new IllegalStateException("User not found"));
+        User user = new User();
+        user.setPassword("123456");
+        user.setPassword(s);
         profile.setUser(user);
         profileService.save(profile);
         return profile;

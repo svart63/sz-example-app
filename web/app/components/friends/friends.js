@@ -1,44 +1,48 @@
 import {viewLoader} from "../../../js/view-loader.js";
 import {rq} from "../../../js/rq.js";
 import {PopupComponent} from "../popup/popup.js";
+import {$iw} from "../../../js/input-waiter.js";
 
 export let FriendsComponent = {
     data() {
         return {
-            friends: [
-                {firstName:'Somename', lastName:'Lastname'},
-                {firstName:'Secondfirst', lastName:'Secondlast'},
-                ],
+            friends: [],
+            filteredFriends: [],
             searchString: '',
             fnameFilter: '',
             lnameFilter: ''
         }
     },
     template: viewLoader.load('friends'),
-    created() {
+    mounted() {
         this.loadFriends();
+    },
+    watch: {
+        searchString() {
+            $iw('search', 500).then(() => {
+                this.modifySearchString();
+                this.filteredFriends = this.filter();
+            })
+        }
     },
     methods: {
         loadFriends() {
-            rq.get('/api/profile/friends', resp => {
+            rq.get('/api/friendship/friends', resp => {
                 resp.json().then(json => {
-                    this.friends.slice(0, this.friends.length);
-                    json.forEach(friend => {
-                        this.friends.push(friend);
-                    })
+                    this.friends = json;
+                    this.filteredFriends = this.friends;
                 })
             })
         },
-        filteredFriends() {
+        filter() {
             let arr = [];
-            this.friends.forEach(profile=> {
+            this.friends.forEach(profile => {
                 let fname = profile.firstName;
                 let lname = profile.lastName;
                 if (this.contains(fname, this.fnameFilter) || this.contains(lname, this.lnameFilter)) {
                     arr.push(profile);
                 }
             });
-
             return arr;
         },
         contains(where, what) {
@@ -51,6 +55,8 @@ export let FriendsComponent = {
             this.fnameFilter = strings[0];
             if (strings[1]) {
                 this.lnameFilter = strings[1];
+            } else {
+                this.lnameFilter = strings[0];
             }
         }
     },

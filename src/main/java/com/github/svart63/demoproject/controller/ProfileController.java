@@ -35,19 +35,4 @@ public class ProfileController {
     public ResponseEntity<Profile> getProfile(@AuthenticationPrincipal SimpleUserDetails user) {
         return ResponseEntity.of(profileService.findByUserId(user.getId()));
     }
-
-    @GetMapping("/friends")
-    public List<Profile> getFriends(@RequestParam(defaultValue = "0") long profileId, @AuthenticationPrincipal SimpleUserDetails user) {
-        if (profileId > 0) {
-            return profileService.findFriendsByProfileId(profileId);
-        } else {
-            return profileService.findFriendsByProfileId(user.getProfileId());
-        }
-    }
-
-    @PostMapping("/friends/add/{profileId}")
-    public ResponseEntity<?> addFriend(@PathVariable long profileId, @AuthenticationPrincipal SimpleUserDetails user) {
-        profileService.addFriend(user.getProfileId(), profileId);
-        return ResponseEntity.ok().build();
-    }
 }

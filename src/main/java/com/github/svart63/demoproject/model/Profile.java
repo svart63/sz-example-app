@@ -1,12 +1,13 @@
 package com.github.svart63.demoproject.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
@@ -17,8 +18,6 @@ public class Profile extends BaseObject {
     private String firstName;
     private String lastName;
     private long birthDay;
-    @OneToMany
-    private List<Profile> friends;
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
 

@@ -13,7 +13,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class ProfileServiceTest {
+class FriendshipServiceTest {
+    @Autowired
+    private FriendshipService friendshipService;
     @Autowired
     private ProfileService profileService;
 
@@ -29,9 +31,9 @@ class ProfileServiceTest {
         User second = registrationService.registration(newUser("second@dmn.com"));
         Profile firstProfile = newProfile(first);
         Profile secondProfile = newProfile(second);
-        profileService.addFriend(firstProfile.getId(), secondProfile.getId());
-        List<Profile> profileId = profileService.findFriendsByProfileId(firstProfile.getId());
-        assertThat(profileId).isNotEmpty().contains(secondProfile);
+        friendshipService.addFriend(firstProfile.getId(), secondProfile.getId());
+        List<Profile> friends = friendshipService.findFriendsByProfileId(firstProfile.getId());
+        assertThat(friends).isNotEmpty().contains(secondProfile);
     }
 
     private Profile newProfile(User first) {
