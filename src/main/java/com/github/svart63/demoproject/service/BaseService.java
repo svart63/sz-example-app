@@ -1,12 +1,10 @@
 package com.github.svart63.demoproject.service;
 
 import com.github.svart63.demoproject.model.BaseObject;
-import com.github.svart63.demoproject.model.Profile;
 import com.github.svart63.demoproject.repo.BaseRepo;
 import lombok.Setter;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 
 @Setter
